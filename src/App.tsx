@@ -1,4 +1,3 @@
-import "./App.css";
 import { useEffect, useState } from "react";
 import getAllCategories from "./services/CategoryService.tsx";
 
@@ -19,7 +18,7 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <h1>Categories</h1>
+      <h1 className="text-5xl font-bold">Categories</h1>
       <ul>
         {categories.map((category) => (
           <li key={category.id}>
