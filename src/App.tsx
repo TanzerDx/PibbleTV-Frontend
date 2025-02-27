@@ -13,7 +13,7 @@ const App: React.FC = () => {
   useEffect(() => {
     getAllCategories()
       .then((data) => setCategories(data))
-      .catch((error) => console.error("Error fetching categories:", error));
+      .catch((error) => console.error("Error fetching the categories:", error));
   }, []);
 
   return (
