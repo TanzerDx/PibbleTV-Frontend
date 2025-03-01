@@ -1,40 +1,38 @@
 import { NavLink } from "react-router-dom";
+import SearchBar from "./searchbar.tsx";
 
 const logo = "/icon transparent.png";
 
 const Navbar: React.FC = () => {
   return (
-    <div className="navbar-container">
-      <img src={logo} alt="Logo" className="navbar-logo" />
+    <div className="bg-navbar flex items-center p-0 text-black">
+      <img src={logo} alt="Logo" className="h-8% w-4%" />
 
-      <div className="navbar-item">
-        <NavLink to="/" id="homepage-link" className="navbar-item-text">
-          HOMEPAGE
-        </NavLink>
+      <div className="flex ml-5 w-20% justify-between text-lg">
+        <div>
+          <NavLink to="/" id="home-link">
+            HOME
+          </NavLink>
+        </div>
+
+        <div>
+          <NavLink to="/categories" id="categories-link">
+            CATEGORIES
+          </NavLink>
+        </div>
+
+        <div>
+          <NavLink to="/leaderboard" id="leaderboard-link">
+            LEADERBOARD
+          </NavLink>
+        </div>
       </div>
 
-      <div className="navbar-item">
-        <NavLink
-          data-testid="cypress-goToConcerts-button"
-          to="/concerts"
-          id="concerts-link"
-          className="navbar-item-text"
-        >
-          CONCERTS
-        </NavLink>
-      </div>
+      <SearchBar />
 
-      <div className="navbar-item">
-        <NavLink to="/aboutUs" id="aboutUs-link" className="navbar-item-text">
-          ABOUT US
-        </NavLink>
-      </div>
-      {/* 
-      <SearchBar /> */}
-
-      <div className="navbar-signin">
-        <NavLink to="/signin" id="signin-link" className="navbar-item-text">
-          SIGN IN
+      <div className="ml-auto mr-5 text-black">
+        <NavLink to="/login" id="login-link">
+          LOG IN
         </NavLink>
       </div>
     </div>
