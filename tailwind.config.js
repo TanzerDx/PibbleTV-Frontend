@@ -41,6 +41,8 @@ export default {
         defaultBg: "#272727",
         defaultText: "rgba(255, 255, 255, 0.87)",
         navbar: "#D9D9D9",
+        defaultBtn: "#504F4F",
+        defaultBtnHover: "#3F3F3F",
       },
       fontFamily: {
         sans: ["system-ui", "Avenir", "Helvetica", "Arial", "sans-serif"],

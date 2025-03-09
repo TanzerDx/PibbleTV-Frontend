@@ -12,6 +12,9 @@ const Register = () => {
   const defaultProfilePic =
     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
 
+  const defaultBackgroundPic =
+    "https://img.goodfon.com/wallpaper/big/0/af/minimalizm-gory-tekstura-cherno-beloe-chernoe.webp";
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -31,9 +34,12 @@ const Register = () => {
           username,
           email,
           profilePic: defaultProfilePic,
+          bgPic: defaultBackgroundPic,
+          followers: 0,
+          following: 0,
         });
 
-        window.location.href = "/login";
+        window.location.href = "/profile";
       }
     } catch (error) {
       console.log("Error registering the user:", error);
@@ -42,13 +48,10 @@ const Register = () => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded shadow-md w-full max-w-sm"
-      >
+      <form onSubmit={handleSubmit} className="w-full max-w-sm">
         <h2 className="text-2xl font-bold mb-4">Register</h2>
         <div className="mb-4">
-          <label className="block text-gray-700">Username</label>
+          <label className="block">Username</label>
           <input
             type="text"
             value={username}
@@ -58,7 +61,7 @@ const Register = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700">Email</label>
+          <label className="block">Email</label>
           <input
             type="email"
             value={email}
@@ -68,7 +71,7 @@ const Register = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700">Password</label>
+          <label className="block">Password</label>
           <input
             type="password"
             value={password}
@@ -78,7 +81,7 @@ const Register = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700">Confirm Password</label>
+          <label className="block">Confirm Password</label>
           <input
             type="password"
             value={passwordToConfirm}
@@ -89,7 +92,7 @@ const Register = () => {
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+          className="w-full bg-defaultBtn text-white py-2 rounded hover:bg-defaultBtnHover"
         >
           Register
         </button>

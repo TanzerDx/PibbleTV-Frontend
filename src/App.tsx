@@ -49,7 +49,10 @@ const App: React.FC = () => {
             path="/login"
             element={user ? <Navigate to="/profile" /> : <Login />}
           />
-          <Route path="/profile" element={<Profile />} />
+          <Route
+            path="/profile"
+            element={!user ? <Navigate to="/login" /> : <Profile />}
+          />
         </Routes>
       </Router>
     </div>

@@ -8,14 +8,13 @@ interface User {
   username: string;
   email: string;
   profilePic: string;
+  bgPic: string;
+  followers: number;
+  following: number;
 }
 
 const Profile: React.FC = () => {
-  const [userDetails, setUserDetails] = useState({
-    username: "",
-    email: "",
-    profilePic: "",
-  });
+  const [userDetails, setUserDetails] = useState<User | null>(null);
 
   const fetchUserData = async () => {
     auth.onAuthStateChanged(async (user: User | null) => {
@@ -25,7 +24,7 @@ const Profile: React.FC = () => {
         if (docSnap.exists()) {
           setUserDetails(docSnap.data() as User);
         } else {
-          console.log("No such document!");
+          console.log("No such user!");
         }
       } else {
         console.log("User is not logged in!");
@@ -37,16 +36,34 @@ const Profile: React.FC = () => {
     fetchUserData();
   }, []);
 
-  async function handleLogout() {
-    await auth.signOut();
-    window.location.href = "/homepage";
-  }
-
   return userDetails ? (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="p-6 rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold mb-4">Profile Page</h1>
-        <p className="text-lg">Username: {userDetails.username}</p>
+    <div>
+      <div>
+        <img
+          className="w-full h-[30vh] object-cover"
+          src={userDetails.bgPic}
+          alt="Background"
+        />
+      </div>
+
+      <div className="flex p-10">
+        <div className="w-10%">
+          <img
+            className="w-full rounded-full"
+            src={userDetails.profilePic}
+            alt="ProfilePic"
+          />
+        </div>
+
+        <div className="flex flex-row items-center ml-2%">
+          <div>
+            <h1 className="text-3xl font-bold">{userDetails.username}</h1>
+          </div>
+          <div className="flex flex-col ml-2%">
+            <h1 className="text-3xl">{userDetails.followers} followers </h1>
+            <h1 className="text-3xl">{userDetails.following} following</h1>
+          </div>
+        </div>
       </div>
     </div>
   ) : (
