@@ -32,6 +32,8 @@ const Register = () => {
           email,
           profilePic: defaultProfilePic,
         });
+
+        window.location.href = "/login";
       }
     } catch (error) {
       console.log("Error registering the user:", error);
