@@ -12,7 +12,7 @@ const Login = () => {
     try {
       await signInWithEmailAndPassword(auth, identifier, password);
       console.log("User logged in");
-      window.location.href = "/profile";
+      window.location.href = "/";
     } catch (error) {
       console.error(error);
     }

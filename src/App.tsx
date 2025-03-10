@@ -43,15 +43,15 @@ const App: React.FC = () => {
           <Route path="/categories" element={<Categories />} />
           <Route
             path="/register"
-            element={user ? <Navigate to="/profile" /> : <Register />}
+            element={!user ? <Register /> : <Navigate to="/profile" />}
           />
           <Route
             path="/login"
-            element={user ? <Navigate to="/profile" /> : <Login />}
+            element={!user ? <Login /> : <Navigate to="/profile" />}
           />
           <Route
             path="/profile"
-            element={!user ? <Navigate to="/login" /> : <Profile />}
+            element={user ? <Profile /> : <Navigate to="/login" />}
           />
         </Routes>
       </Router>
