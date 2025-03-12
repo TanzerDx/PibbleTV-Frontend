@@ -22,6 +22,7 @@ const Login = () => {
     <div className="flex justify-center items-center h-screen">
       <form onSubmit={handleSubmit} className="w-full max-w-sm">
         <h2 className="text-2xl font-bold mb-4">Login</h2>
+
         <div className="mb-4">
           <label className="block">Email</label>
           <input
@@ -32,6 +33,7 @@ const Login = () => {
             required
           />
         </div>
+
         <div className="mb-4">
           <label className="block">Password</label>
           <input
