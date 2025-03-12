@@ -1,9 +1,12 @@
 import { NavLink } from "react-router-dom";
-import { auth } from "../../firebase.js";
+import { auth, db } from "../../firebase.js";
+import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import SearchBar from "./searchbar.tsx";
 
 const logo = "/icon transparent.png";
+const notifs = "/bell-icon.svg";
+const settings = "cogwheel.png";
 
 interface User {
   uid: string;
@@ -15,20 +18,34 @@ interface User {
 const Navbar: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
 
-  useEffect(() => {
-    auth.onAuthStateChanged((user: User | null) => {
+  const fetchUserData = async () => {
+    auth.onAuthStateChanged(async (user: User | null) => {
       if (user) {
-        setUser(user as User);
+        const docRef = doc(db, "Users", user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setUser(docSnap.data() as User);
+        } else {
+          console.log("No such user!");
+        }
       } else {
-        setUser(null);
+        console.log("User is not logged in!");
       }
     });
+  };
+
+  useEffect(() => {
+    fetchUserData();
   }, []);
 
   async function handleLogout() {
     await auth.signOut();
     window.location.href = "/";
   }
+
+  const handleProfileClick = () => {
+    window.location.href = "/profile";
+  };
 
   return (
     <div className="bg-navbar flex items-center p-0 text-black">
@@ -63,11 +80,35 @@ const Navbar: React.FC = () => {
           </NavLink>
         </div>
       ) : (
-        <div className="ml-auto mr-5 text-black">
-          <NavLink to="/" id="logout-link" onClick={handleLogout}>
-            LOG OUT
-          </NavLink>
-        </div>
+        <>
+          <div
+            onClick={handleProfileClick}
+            className="flex gap-3 items-center w-5% ml-auto mr-2% hover:cursor-pointer"
+          >
+            <img
+              src={user.profilePic}
+              alt="pfp"
+              className="w-60% rounded-full border-1 border-black"
+            />
+
+            <h1 className="text-black">{user.username}</h1>
+          </div>
+
+          <div className="flex gap-3 items-center w-5% ml-auto mr-2%">
+            <img
+              src={notifs}
+              alt="Notifs"
+              className="w-60% hover:cursor-pointer"
+            />
+
+            <img
+              src={settings}
+              onClick={handleLogout}
+              alt="Settings"
+              className="w-45% hover:cursor-pointer"
+            />
+          </div>
+        </>
       )}
     </div>
   );

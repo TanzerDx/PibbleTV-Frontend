@@ -23,6 +23,7 @@ interface User {
 
 const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     auth.onAuthStateChanged((user: User | null) => {
@@ -31,8 +32,13 @@ const App: React.FC = () => {
       } else {
         setUser(null);
       }
+      setLoading(false);
     });
   }, []);
+
+  if (loading) {
+    return <div></div>;
+  }
 
   return (
     <div>
