@@ -1,18 +1,18 @@
 import { useState } from "react";
+import login from "../services/AuthenticationService.tsx";
 
 const Login = () => {
-  const [identifier, setIdentifier] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      // await signInWithEmailAndPassword(auth, identifier, password);
-      console.log("User logged in");
-      window.location.href = "/";
+      const token = await login(email, password);
+      console.log("Login successful. Token:", token);
     } catch (error) {
-      console.error(error);
+      console.error("Login failed:", error);
     }
   };
 
@@ -25,8 +25,8 @@ const Login = () => {
           <label className="block">Email</label>
           <input
             type="text"
-            value={identifier}
-            onChange={(e) => setIdentifier(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full px-3 py-2 border rounded text-black"
             required
           />
