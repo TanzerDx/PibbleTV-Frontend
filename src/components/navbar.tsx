@@ -1,6 +1,4 @@
 import { NavLink } from "react-router-dom";
-import { auth, db } from "../../firebase.js";
-import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import SearchBar from "./searchbar.tsx";
 
@@ -19,19 +17,19 @@ const Navbar: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
 
   const fetchUserData = async () => {
-    auth.onAuthStateChanged(async (user: User | null) => {
-      if (user) {
-        const docRef = doc(db, "Users", user.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setUser(docSnap.data() as User);
-        } else {
-          console.log("No such user!");
-        }
-      } else {
-        console.log("User is not logged in!");
-      }
-    });
+    // auth.onAuthStateChanged(async (user: User | null) => {
+    //   if (user) {
+    //     const docRef = doc(db, "Users", user.uid);
+    //     const docSnap = await getDoc(docRef);
+    //     if (docSnap.exists()) {
+    //       setUser(docSnap.data() as User);
+    //     } else {
+    //       console.log("No such user!");
+    //     }
+    //   } else {
+    //     console.log("User is not logged in!");
+    //   }
+    // });
   };
 
   useEffect(() => {
@@ -39,7 +37,7 @@ const Navbar: React.FC = () => {
   }, []);
 
   async function handleLogout() {
-    await auth.signOut();
+    // await auth.signOut();
     window.location.href = "/";
   }
 

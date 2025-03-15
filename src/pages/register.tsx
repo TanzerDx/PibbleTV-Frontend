@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../../firebase.js";
-import { setDoc, doc } from "firebase/firestore";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -24,23 +21,22 @@ const Register = () => {
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      const user = auth.currentUser;
+      // await createUserWithEmailAndPassword(auth, email, password);
+      // const user = auth.currentUser;
 
-      console.log(user);
+      // console.log(user);
 
-      if (user) {
-        await setDoc(doc(db, "Users", user.uid), {
-          username,
-          email,
-          profilePic: defaultProfilePic,
-          bgPic: defaultBackgroundPic,
-          followers: 0,
-          following: 0,
-        });
+      // if (user) {
+      //   await setDoc(doc(db, "Users", user.uid), {
+      //     username,
+      //     email,
+      //     profilePic: defaultProfilePic,
+      //     bgPic: defaultBackgroundPic,
+      //     followers: 0,
+      //     following: 0,
+      //   });
 
-        window.location.href = "/profile";
-      }
+      window.location.href = "/profile";
     } catch (error) {
       console.log("Error registering the user:", error);
     }

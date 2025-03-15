@@ -1,6 +1,4 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
-import { auth } from "../../firebase.js";
 
 const Login = () => {
   const [identifier, setIdentifier] = useState("");
@@ -10,7 +8,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      await signInWithEmailAndPassword(auth, identifier, password);
+      // await signInWithEmailAndPassword(auth, identifier, password);
       console.log("User logged in");
       window.location.href = "/";
     } catch (error) {
