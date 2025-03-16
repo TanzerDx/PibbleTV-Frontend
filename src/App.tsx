@@ -22,18 +22,17 @@ interface User {
 }
 
 const App: React.FC = () => {
-  const [user, setUser] = useState<User | null>(null);
+  const [isTokenValid, setIsTokenValid] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    auth.onAuthStateChanged((user: User | null) => {
-      if (user) {
-        setUser(user as User);
-      } else {
-        setUser(null);
-      }
-      setLoading(false);
-    });
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      setIsTokenValid(true);
+    } else {
+      setIsTokenValid(false);
+    }
+    setLoading(false);
   }, []);
 
   if (loading) {
@@ -49,15 +48,15 @@ const App: React.FC = () => {
           <Route path="/categories" element={<Categories />} />
           <Route
             path="/register"
-            element={!user ? <Register /> : <Navigate to="/profile" />}
+            element={!isTokenValid ? <Register /> : <Navigate to="/profile" />}
           />
           <Route
             path="/login"
-            element={!user ? <Login /> : <Navigate to="/profile" />}
+            element={!isTokenValid ? <Login /> : <Navigate to="/profile" />}
           />
           <Route
             path="/profile"
-            element={user ? <Profile /> : <Navigate to="/login" />}
+            element={isTokenValid ? <Profile /> : <Navigate to="/login" />}
           />
         </Routes>
       </Router>

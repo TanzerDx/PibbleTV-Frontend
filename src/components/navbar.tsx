@@ -15,21 +15,13 @@ interface User {
 
 const Navbar: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [isTokenValid, setIsTokenValid] = useState(false);
 
   const fetchUserData = async () => {
-    // auth.onAuthStateChanged(async (user: User | null) => {
-    //   if (user) {
-    //     const docRef = doc(db, "Users", user.uid);
-    //     const docSnap = await getDoc(docRef);
-    //     if (docSnap.exists()) {
-    //       setUser(docSnap.data() as User);
-    //     } else {
-    //       console.log("No such user!");
-    //     }
-    //   } else {
-    //     console.log("User is not logged in!");
-    //   }
-    // });
+    const token = localStorage.getItem("access_token");
+    if (token) setIsTokenValid(true);
+    else setIsTokenValid(false);
+    // will create logic to get user data from the access token in the future
   };
 
   useEffect(() => {
@@ -37,7 +29,7 @@ const Navbar: React.FC = () => {
   }, []);
 
   async function handleLogout() {
-    // await auth.signOut();
+    localStorage.removeItem("access_token");
     window.location.href = "/";
   }
 
@@ -71,7 +63,7 @@ const Navbar: React.FC = () => {
 
       <SearchBar />
 
-      {!user ? (
+      {!isTokenValid ? (
         <div className="ml-auto mr-5 text-black">
           <NavLink to="/login" id="login-link">
             LOG IN
@@ -79,7 +71,7 @@ const Navbar: React.FC = () => {
         </div>
       ) : (
         <>
-          <div
+          {/* <div
             onClick={handleProfileClick}
             className="flex gap-3 items-center w-5% ml-auto mr-2% hover:cursor-pointer"
           >
@@ -90,7 +82,7 @@ const Navbar: React.FC = () => {
             />
 
             <h1 className="text-black">{user.username}</h1>
-          </div>
+          </div> */}
 
           <div className="flex gap-3 items-center w-5% ml-auto mr-2%">
             <img

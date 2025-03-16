@@ -1,6 +1,4 @@
 import { useEffect } from "react";
-import { auth, db } from "../../firebase.js";
-import { doc, getDoc } from "firebase/firestore";
 import { useState } from "react";
 
 interface User {
@@ -17,19 +15,7 @@ const Profile: React.FC = () => {
   const [userDetails, setUserDetails] = useState<User | null>(null);
 
   const fetchUserData = async () => {
-    auth.onAuthStateChanged(async (user: User | null) => {
-      if (user) {
-        const docRef = doc(db, "Users", user.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setUserDetails(docSnap.data() as User);
-        } else {
-          console.log("No such user!");
-        }
-      } else {
-        console.log("User is not logged in!");
-      }
-    });
+    // will create logic to fetch user from access token soon
   };
 
   useEffect(() => {

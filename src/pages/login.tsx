@@ -11,6 +11,9 @@ const Login = () => {
     try {
       const token = await login(email, password);
       console.log("Login successful. Token:", token);
+
+      localStorage.setItem("access_token", token);
+      window.location.href = "/";
     } catch (error) {
       console.error("Login failed:", error);
     }
