@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { register } from "../services/AuthenticationService";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -21,20 +22,15 @@ const Register = () => {
     }
 
     try {
-      // await createUserWithEmailAndPassword(auth, email, password);
-      // const user = auth.currentUser;
+      register(
+        username,
+        email,
+        password,
+        defaultBackgroundPic,
+        defaultProfilePic
+      );
 
-      // console.log(user);
-
-      // if (user) {
-      //   await setDoc(doc(db, "Users", user.uid), {
-      //     username,
-      //     email,
-      //     profilePic: defaultProfilePic,
-      //     bgPic: defaultBackgroundPic,
-      //     followers: 0,
-      //     following: 0,
-      //   });
+      console.log("User registered successfully");
 
       window.location.href = "/profile";
     } catch (error) {
