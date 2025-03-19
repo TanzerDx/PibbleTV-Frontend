@@ -23,7 +23,9 @@ function register(
       defaultBackgroundPic,
       defaultProfilePic,
     })
-    .then((response: AxiosResponse<string>) => response.data);
+    .then((response: AxiosResponse<string>) => {
+      return response.data;
+    });
 }
 
 export { login, register };

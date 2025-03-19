@@ -22,7 +22,7 @@ const Register = () => {
     }
 
     try {
-      register(
+      const token = await register(
         username,
         email,
         password,
@@ -30,7 +30,8 @@ const Register = () => {
         defaultProfilePic
       );
 
-      console.log("User registered successfully");
+      console.log("User registered successfully ");
+      localStorage.setItem("access_token", token);
 
       window.location.href = "/profile";
     } catch (error) {
