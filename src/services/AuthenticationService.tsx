@@ -1,10 +1,10 @@
 import axios, { AxiosResponse } from "axios";
 
-const hostname = "http://localhost:8080";
+const hostname = "http://localhost:8078/auth";
 
 function login(email: string, password: string): Promise<string> {
   return axios
-    .post<string>(`${hostname}/auth/login`, { email, password })
+    .post<string>(`${hostname}/login`, { email, password })
     .then((response: AxiosResponse<string>) => response.data);
 }
 
@@ -16,7 +16,7 @@ function register(
   defaultProfilePic: string
 ): Promise<string> {
   return axios
-    .post<string>(`${hostname}/auth/register`, {
+    .post<string>(`${hostname}/register`, {
       username,
       email,
       password,
