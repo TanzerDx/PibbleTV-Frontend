@@ -5,6 +5,7 @@ import keycloak from "./keycloak";
 interface KeycloakContextType {
   keycloak: Keycloak;
   authenticated: boolean;
+  token: string | undefined;
 }
 
 interface KeycloakProviderProps {
@@ -20,35 +21,45 @@ export const KeycloakProvider: React.FC<KeycloakProviderProps> = ({
 }) => {
   const [initialized, setInitialized] = useState<boolean>(false);
   const [authenticated, setAuthenticated] = useState<boolean>(false);
+  const [token, setToken] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     if (keycloak.didInitialize) return;
 
     keycloak
       .init({
-        onLoad: "check-sso", // Check if the user is logged in without forcing login
+        onLoad: "check-sso",
       })
       .then((auth) => {
         setAuthenticated(auth);
         setInitialized(true);
 
         if (auth) {
+          setToken(keycloak.token);
+
           setInterval(() => {
-            keycloak.updateToken(70).catch(() => keycloak.logout());
+            keycloak
+              .updateToken(70)
+              .then((refreshed) => {
+                if (refreshed) {
+                  setToken(keycloak.token);
+                }
+              })
+              .catch(() => keycloak.logout());
           }, 60000);
         }
       })
       .catch((error) => {
         console.error("Keycloak initialization failed:", error);
-        setAuthenticated(false); // Treat as unauthenticated
-        setInitialized(true); // Ensure the app still loads
+        setAuthenticated(false);
+        setInitialized(true);
       });
   }, []);
 
   if (!initialized) return <div>Loading...</div>;
 
   return (
-    <KeycloakContext.Provider value={{ keycloak, authenticated }}>
+    <KeycloakContext.Provider value={{ keycloak, authenticated, token }}>
       {children}
     </KeycloakContext.Provider>
   );

@@ -1,21 +1,16 @@
-import { useContext } from "react";
-import { Navigate } from "react-router-dom";
+import { ReactNode, useContext } from "react";
 import { KeycloakContext } from "../KeycloakProvider";
+import { Navigate } from "react-router-dom";
 
 interface ProtectedRouteProps {
-  children: JSX.Element;
+  children: ReactNode;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const keycloakContext = useContext(KeycloakContext);
+  const context = useContext(KeycloakContext);
 
-  if (!keycloakContext) {
-    return <div>Error: Keycloak context not found</div>;
-  }
-
-  const { authenticated } = keycloakContext;
-
-  return authenticated ? children : <Navigate to="/login" />;
+  if (!context?.authenticated) return <Navigate to="/login" />;
+  return children;
 };
 
 export default ProtectedRoute;
