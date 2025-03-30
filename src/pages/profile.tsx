@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { KeycloakContext } from "../KeycloakProvider";
-import { getUser } from "../services/UserService";
+import { getUserByAccessToken } from "../services/UserService";
 import { IUser } from "../types/user.type.ts";
 
 const Profile = () => {
@@ -13,7 +13,7 @@ const Profile = () => {
       return;
     }
 
-    getUser(keycloakContext.token)
+    getUserByAccessToken()
       .then((userData: IUser) => {
         setUser(userData);
       })

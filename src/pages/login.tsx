@@ -1,6 +1,6 @@
 import { useEffect, useContext } from "react";
 import { KeycloakContext } from "../KeycloakProvider";
-import { getUser, saveUser } from "../services/UserService";
+import { getUserByAccessToken, saveUser } from "../services/UserService";
 
 const Login = () => {
   const keycloakContext = useContext(KeycloakContext);
@@ -17,13 +17,13 @@ const Login = () => {
       .login()
       .then(() => {
         if (token) {
-          getUser(token)
+          getUserByAccessToken()
             .then((existingUser) => {
               console.log("User already registered:", existingUser);
             })
             .catch((error) => {
               if (error.response && error.response.status === 404) {
-                saveUser(token)
+                saveUser()
                   .then(() => {
                     console.log("User registered successfully");
                   })
