@@ -1,5 +1,5 @@
 import { ReactNode, useContext } from "react";
-import { KeycloakContext } from "../KeycloakProvider";
+import { KeycloakContext } from "./KeycloakProvider";
 import { Navigate } from "react-router-dom";
 
 interface ProtectedRouteProps {
