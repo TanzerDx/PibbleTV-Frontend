@@ -1,54 +1,57 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { useState } from "react";
-import { auth } from "../../firebase.js";
+import { useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { KeycloakContext } from "../KeycloakProvider";
+import { getUserByAccessToken, saveUser } from "../services/UserService";
 
 const Login = () => {
-  const [identifier, setIdentifier] = useState("");
-  const [password, setPassword] = useState("");
+  const keycloakContext = useContext(KeycloakContext);
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    try {
-      await signInWithEmailAndPassword(auth, identifier, password);
-      console.log("User logged in");
-      window.location.href = "/";
-    } catch (error) {
-      console.error(error);
+  useEffect(() => {
+    if (!keycloakContext) {
+      console.error("Keycloak context not found");
+      return;
     }
-  };
+
+    const { keycloak, token } = keycloakContext;
+
+    if (keycloak.authenticated) {
+      navigate("/");
+      return;
+    }
+    keycloak
+      .login()
+      .then(() => {
+        if (token) {
+          getUserByAccessToken()
+            .then((existingUser) => {
+              console.log("User already registered:", existingUser);
+              navigate("/");
+            })
+            .catch((error) => {
+              if (error.response && error.response.status === 404) {
+                saveUser()
+                  .then(() => {
+                    console.log("User registered successfully");
+                    navigate("/");
+                  })
+                  .catch((saveError) => {
+                    console.error("Failed to register user:", saveError);
+                  });
+              } else {
+                console.error("Failed to fetch user data:", error);
+              }
+            });
+        }
+      })
+      .catch((error) => {
+        console.error("Keycloak login failed:", error);
+      });
+  }, [keycloakContext, navigate]);
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <form onSubmit={handleSubmit} className="w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-4">Login</h2>
-        <div className="mb-4">
-          <label className="block">Email</label>
-          <input
-            type="text"
-            value={identifier}
-            onChange={(e) => setIdentifier(e.target.value)}
-            className="w-full px-3 py-2 border rounded text-black"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block">Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 border rounded text-black"
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-defaultBtn text-white py-2 rounded hover:bg-defaultBtnHover"
-        >
-          Login
-        </button>
-      </form>
+      <h1 className="text-2xl font-bold">Redirecting to login...</h1>
     </div>
   );
 };

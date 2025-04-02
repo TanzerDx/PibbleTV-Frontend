@@ -1,67 +1,31 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
-
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useContext, useEffect } from "react";
 import Navbar from "./components/navbar.tsx";
+import { KeycloakContext } from "./KeycloakProvider.tsx";
 import Homepage from "./pages/homepage.tsx";
 import Categories from "./pages/categories.tsx";
-import Register from "./pages/register.tsx";
 import Login from "./pages/login.tsx";
 import Profile from "./pages/profile.tsx";
-import { useEffect, useState } from "react";
-import { auth } from "../firebase.js";
-
-interface User {
-  uid: string;
-  username: string;
-  email: string;
-  profilePic: string;
-}
+import ProtectedRoute from "./ProtectedRoute.tsx";
 
 const App: React.FC = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    auth.onAuthStateChanged((user: User | null) => {
-      if (user) {
-        setUser(user as User);
-      } else {
-        setUser(null);
-      }
-      setLoading(false);
-    });
-  }, []);
-
-  if (loading) {
-    return <div></div>;
-  }
-
   return (
-    <div>
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/categories" element={<Categories />} />
-          <Route
-            path="/register"
-            element={!user ? <Register /> : <Navigate to="/profile" />}
-          />
-          <Route
-            path="/login"
-            element={!user ? <Login /> : <Navigate to="/profile" />}
-          />
-          <Route
-            path="/profile"
-            element={user ? <Profile /> : <Navigate to="/login" />}
-          />
-        </Routes>
-      </Router>
-    </div>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </Router>
   );
 };
 
