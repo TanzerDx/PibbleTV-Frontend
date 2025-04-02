@@ -7,6 +7,7 @@ import Categories from "./pages/categories.tsx";
 import Login from "./pages/login.tsx";
 import Profile from "./pages/profile.tsx";
 import ProtectedRoute from "./ProtectedRoute.tsx";
+import Stream from "./pages/stream.tsx";
 
 const App: React.FC = () => {
   return (
@@ -16,6 +17,7 @@ const App: React.FC = () => {
         <Route path="/" element={<Homepage />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/stream" element={<Stream />} />
         <Route
           path="/profile"
           element={
